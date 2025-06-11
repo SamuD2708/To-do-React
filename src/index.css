@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --text: 4 24 24;
+    --background: 247 254 254;
+    --primary: 40 223 216;
+    --secondary: 131 138 236;
+    --accent: 119 93 231;
+  }
+  .dark {
+    --text: 233 251 251;
+    --background: 1 9 9;
+    --primary: 32 213 207;
+    --secondary: 19 26 124;
+    --accent: 49 24 160;
+  }
+}
+
+  
+
+
