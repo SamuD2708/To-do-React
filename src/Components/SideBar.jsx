@@ -5,6 +5,7 @@ import { MdQuestionMark } from "react-icons/md";
 import { IoIosContact } from "react-icons/io";
 import { FiSidebar } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function SideBar() {
     //Vado a creare un riferimento per la funzione che setta la nuova dimensione nello stato
@@ -34,7 +35,7 @@ export default function SideBar() {
         }
     }
 
-    const handleOpen = ()=>{
+    const handleOpen = () => {
         setIsOpen(!isOPen);
     }
 
@@ -62,7 +63,7 @@ export default function SideBar() {
         }
 
         window.addEventListener('resize', handleWindowResize)
-        return( () => {window.removeEventListener('resize', handleWindowResize)})
+        return (() => { window.removeEventListener('resize', handleWindowResize) })
     }, []);
 
 
@@ -74,10 +75,13 @@ export default function SideBar() {
             </div>
             <ul className="flex flex-col w-full mt-10 mr-3">
                 <li className="hover:bg-stone-300 p-1.5 border border-transparent rounded-lg w-full">
-                    <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
-                        <IoTodayOutline></IoTodayOutline>
-                        <span>Today</span>
-                    </div>
+                    <Link to={'/today'}>
+                        <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
+                            <IoTodayOutline></IoTodayOutline>
+                            <span>Today</span>
+                        </div>
+                    </Link>
+
                 </li>
                 <li className="hover:bg-stone-300 p-1.5 border border-transparent rounded-lg w-full">
                     <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
@@ -98,10 +102,13 @@ export default function SideBar() {
                     </div>
                 </li>
                 <li className="hover:bg-stone-300 p-1.5 border border-transparent rounded-lg w-full">
-                    <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
-                        <MdQuestionMark></MdQuestionMark>
-                        <span>About</span>
-                    </div>
+                    <Link to={'/about'}>
+                        <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
+                            <MdQuestionMark></MdQuestionMark>
+                            <span>About</span>
+                        </div>
+                    </Link>
+
                 </li>
             </ul>
 
