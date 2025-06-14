@@ -3,44 +3,76 @@ import { MdDoneOutline } from "react-icons/md";
 import { CiClock1 } from "react-icons/ci";
 import { MdQuestionMark } from "react-icons/md";
 import { IoIosContact } from "react-icons/io";
+import { FiSidebar } from "react-icons/fi";
 import { useEffect, useRef, useState } from "react";
 
 export default function SideBar() {
-    const aside = useRef();
+    //Vado a creare un riferimento per la funzione che setta la nuova dimensione nello stato
+    const handleMoveRef = useRef((e) => { })
 
-    const [asideWidth, setAsideWidth] = useState(1/6);
-    
-    //Handler event
-    const handleMove = (e) => {
-        setAsideWidth(e.clientX);
+    const [asideWidth, setAsideWidth] = useState(null)
+    const [isOPen, setIsOpen] = useState(null);
+
+    // HANDLER EVENT
+    //Inizio e fine del listener per il mouseMove
+    const handleMouseUp = () => {
+        window.removeEventListener('mousemove', handleMoveRef.current)
     }
-
-    const handleMouseUp = () =>{
-         window.removeEventListener('mousemove', handleMove)
-    }
-
     const startResize = (e) => {
-       
-        window.addEventListener('mousemove', handleMove)
+        window.addEventListener('mousemove', handleMoveRef.current)
+    }
 
+    const handleWindowResize = () => {
+        const currentWidth = window.innerWidth;
+        console.log(currentWidth)
+        if (currentWidth <= 768) {
+            setAsideWidth(100)
+            setIsOpen(false);
+        } else {
+            setAsideWidth(250)
+            setIsOpen(true);
+        }
+    }
+
+    const handleOpen = ()=>{
+        setIsOpen(!isOPen);
     }
 
     useEffect(() => {
+        //Appena carica la pagina vado a riscrivere la funzione per l aggiornamento della size 
+        //in modo che il remove rimuova l ultima funzione creata
+        handleMoveRef.current = (e) => {
+            setAsideWidth(Math.min(Math.max(100, e.clientX), 320))
+        };
+
         window.addEventListener('mouseup', handleMouseUp)
-
         return () => { window.removeEventListener('mouseup', handleMouseUp) }
-    }, [])
+    }, []);
 
-    useEffect(()=>{
-        console.log('asideqidth: ' + asideWidth)
-    }, [asideWidth])
+    //Inizializzo dimensione aside e isOPen
+    useEffect(() => {
+        const currentWidth = window.innerWidth;
+        console.log(currentWidth)
+        if (currentWidth <= 768) {
+            setAsideWidth(100)
+            setIsOpen(false);
+        } else {
+            setAsideWidth(250)
+            setIsOpen(true);
+        }
 
-
+        window.addEventListener('resize', handleWindowResize)
+        return( () => {window.removeEventListener('resize', handleWindowResize)})
+    }, []);
 
 
     return (
-        <aside ref={aside} className={`flex flex-row justify-between bg-stone-200  max-w-80 min-w-fit h-full pl-6 text-lg`} style={{width: asideWidth}}>
-            <ul className="flex flex-col w-fit mt-6">
+        <aside className={`flex flex-row justify-between bg-stone-200 max-w-80 min-w-fit h-full pl-6 text-lg  
+             transition-transform duration-500 ease-in-out relative ${isOPen ? '' : '-translate-x-full'}`} style={{ width: asideWidth }}>
+            <div className={`absolute end-3 top-3 ${!isOPen ? 'translate-x-14' : ''} transition-transform duration-500`}>
+                <button onClick={handleOpen} className="hover:cursor-pointer"><FiSidebar className="text-2xl"></FiSidebar></button>
+            </div>
+            <ul className="flex flex-col w-full mt-10 mr-3">
                 <li className="hover:bg-stone-300 p-1.5 border border-transparent rounded-lg w-full">
                     <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
                         <IoTodayOutline></IoTodayOutline>
