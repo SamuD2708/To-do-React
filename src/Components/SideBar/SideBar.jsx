@@ -1,15 +1,22 @@
+//ICONE
 import { IoTodayOutline } from "react-icons/io5";
 import { MdDoneOutline } from "react-icons/md";
 import { CiClock1 } from "react-icons/ci";
 import { MdQuestionMark } from "react-icons/md";
 import { IoIosContact } from "react-icons/io";
 import { FiSidebar } from "react-icons/fi";
+import { FaTasks } from "react-icons/fa";
+import { IoAddCircle } from "react-icons/io5";
+
+import SideBarItem from "./SideBarItem"
+
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function SideBar() {
     //Vado a creare un riferimento per la funzione che setta la nuova dimensione nello stato
     const handleMoveRef = useRef((e) => { })
+    const curranetLocation = useLocation();
 
     const [asideWidth, setAsideWidth] = useState(null)
     const [isOPen, setIsOpen] = useState(null);
@@ -74,46 +81,31 @@ export default function SideBar() {
                 <button onClick={handleOpen} className="hover:cursor-pointer"><FiSidebar className="text-2xl"></FiSidebar></button>
             </div>
             <ul className="flex flex-col w-full mt-10 mr-3">
-                <li className="hover:bg-stone-300 p-1.5 border border-transparent rounded-lg w-full">
-                    <Link to={'/today'}>
-                        <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
-                            <IoTodayOutline></IoTodayOutline>
-                            <span>Today</span>
-                        </div>
-                    </Link>
+                {/* ADD BUTTON */}
+                 <li className={`active:bg-stone-400 hover:bg-stone-300 p-1.5 border border-transparent rounded-lg
+                     w-full transition-colors duration-100 ease-in `} >
+                    <div className={`flex flex-row items-center gap-1.5 hover:cursor-pointer text-xl text-emerald-800`}>
+                        <IoAddCircle className="text-2xl"></IoAddCircle>
+                        Add Task
+                    </div>
+                </li>
 
-                </li>
-                <li className="hover:bg-stone-300 p-1.5 border border-transparent rounded-lg w-full">
-                    <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
-                        <MdDoneOutline></MdDoneOutline>
-                        <span>Completed</span>
-                    </div>
-                </li>
-                <li className="hover:bg-stone-300 p-1.5 border border-transparent rounded-lg w-full">
-                    <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
-                        <CiClock1></CiClock1>
-                        <span>To complete</span>
-                    </div>
-                </li>
-                <li className="hover:bg-stone-300 p-1.5 border border-transparent rounded-lg w-full">
-                    <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
-                        <IoIosContact></IoIosContact>
-                        <span>Contact</span>
-                    </div>
-                </li>
-                <li className="hover:bg-stone-300 p-1.5 border border-transparent rounded-lg w-full">
-                    <Link to={'/about'}>
-                        <div className="flex flex-row items-center gap-1.5 hover:cursor-pointer">
-                            <MdQuestionMark></MdQuestionMark>
-                            <span>About</span>
-                        </div>
-                    </Link>
+                <SideBarItem icon={<IoTodayOutline />} curranetLocation={curranetLocation} path='/today'>Today</SideBarItem>
+                
+                <SideBarItem icon={<FaTasks />} curranetLocation={curranetLocation} path='/alltask'>All task</SideBarItem>
 
-                </li>
+                <SideBarItem icon={<MdDoneOutline />} curranetLocation={curranetLocation} path='/completed'>Completed</SideBarItem>
+
+                <SideBarItem icon={<CiClock1 />} curranetLocation={curranetLocation} path='/tocomplete'>To complete</SideBarItem>
+
+                <SideBarItem icon={<IoIosContact />} curranetLocation={curranetLocation} path='/contact'>Contact</SideBarItem>
+
+                <SideBarItem icon={<MdQuestionMark />} curranetLocation={curranetLocation} path='/about'>About</SideBarItem>
             </ul>
 
             {/* Spazio per poter ridimensionare la barra */}
-            <div onMouseDown={startResize} className="w-1.5 h-full hover:bg-blue-700 hover:cursor-col-resize transition-colors delay-200 ease-in-out duration-300"></div>
+            <div onMouseDown={startResize} className="w-1.5 h-full hover:bg-blue-700 hover:cursor-col-resize
+                 transition-colors delay-200 ease-in-out duration-300"></div>
         </aside>
     )
 }

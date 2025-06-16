@@ -1,5 +1,5 @@
 export default function Today (){
-    return (
-        <h1>today</h1>
+    return(
+        <h1>TODAY</h1>
     )
 }
