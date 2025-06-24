@@ -17,6 +17,64 @@
   }
 }
 
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+
+/* Aggiungi una utility personalizzata */
+.fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+.fade-out {
+  animation: fade-out 0.3s ease-out;
+}
+
+/* DATEPICKER */
+@layer utilities {
+  .custom-datepicker {
+    @apply rounded-md!
+  }
+
+  /* HEADER */
+  .react-datepicker__header {
+    @apply bg-emerald-700! border-0! rounded-md!
+  }
+
+  .react-datepicker__current-month{
+    @apply pb-2! text-white!
+  }
+
+  .react-datepicker__day-names{
+    @apply bg-white!
+  }
+
+  .react-datepicker__day--selected{
+    @apply bg-emerald-700! rounded-full!
+  }
+}
+
+
+
+
   
 
 
