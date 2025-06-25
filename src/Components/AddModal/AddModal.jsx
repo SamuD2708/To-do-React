@@ -4,8 +4,16 @@ import { CiCalendar } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
 import "react-datepicker/dist/react-datepicker.css";
 import Select from "./Select";
+import useClickOutside from "../../Hooks/UsClickOutside";
+import { useSelector, useDispatch } from 'react-redux'
+import { add } from "../../Redux/TaskSlice"
+import { v7 as uuidv7 } from 'uuid'
 
 export default function AddModal({ toggleModalOpen, modalOpen }) {
+    const tasks = useSelector((state) => state.tasks.value);
+    const dispatch = useDispatch();
+
+
     // Options for priority select
     const options = [
         { value: 1, label: "Priority 1", color: 'blue' },
@@ -18,10 +26,12 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
 
     const [calendarOpen, setcalendarOpen] = useState(false);
     const [task, setTask] = useState({
+        id: uuidv7(),
         title: '',
         description: '',
         date: null,
-        priority: null
+        priority: null,
+        completed: false
     })
 
     const addPriority = (newPriority) => {
@@ -44,9 +54,28 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
         modal.current.classList.add('fade-out');
     }
 
+    const handleAdd = () => {
+        dispatch(add(task));
+
+        setTask({
+            id: uuidv7(),
+            title: '',
+            description: '',
+            date: null,
+            priority: null,
+            completed: false
+        })
+    }
+
+    useClickOutside(modal, handleClose)
+
     useEffect(() => {
         console.log(task)
     }, [task])
+
+    useEffect(() => {
+        console.log(tasks)
+    }, [tasks])
 
     // Custom datepicker input
 
@@ -73,9 +102,9 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
                 <form action="" className="h-full flex flex-col gap-3 relative " onSubmit={(e) => { e.preventDefault() }}>
                     <div>
                         <input type="text" id="task-title" placeholder="Add a title" className="w-full border-transparent h-9 text-xl font-semibold px-2.5 mt-2.5 focus-visible:outline-0"
-                            onChange={(e) => { setTask({ ...task, title: e.target.value }) }}></input>
+                            onChange={(e) => { setTask({ ...task, title: e.target.value })}} value={task.title}></input>
                         <input type="text" id="task-description" placeholder="Description" className="w-full border-transparent px-2.5 focus-visible:outline-0 "
-                            onChange={(e) => { setTask({ ...task, description: e.target.value }) }}></input>
+                            onChange={(e) => { setTask({ ...task, description: e.target.value })}} value={task.description}></input>
                     </div>
 
                     <div className="flex flex-row gap-2.5 mx-2">
@@ -102,8 +131,11 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
 
                     <div className=" h-fit absolute bottom-2.5 end-4 flex gap-2">
                         <button className=" py-2 px-3 rounded-lg bg-stone-200 hover:bg-stone-300 hover:cursor-pointer active:bg-stone-400" onClick={handleClose}>Cancel</button>
-                        <button className=" py-2 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 hover:cursor-pointer active:bg-emerald-800 text-white" onClick={handleClose}>Add task</button>
-
+                        <button disabled={task.title === '' ? true : false}
+                            className={`py-2 px-3 rounded-lg text-white bg-emerald-600 hover:bg-emerald-700 hover:cursor-pointer
+                                 active:bg-emerald-800 disabled:bg-emerald-300/60 disabled:cursor-not-allowed`} onClick={handleAdd}>
+                            Add task
+                        </button>
                     </div>
                 </form>
 

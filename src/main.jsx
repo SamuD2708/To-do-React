@@ -6,6 +6,7 @@ import Completed from './Pages/Completed.jsx'
 import ToComplete from './Pages/ToComplete.jsx'
 import Contact from './Pages/Contact.jsx'
 import AllTask from "./Pages/AllTask.jsx"
+import { Provider } from 'react-redux'
 
 // FILE CSS
 import './index.css'
@@ -13,6 +14,7 @@ import './index.css'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Store from './Redux/Store.js'
 
 const router = createBrowserRouter([
   {
@@ -53,6 +55,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <Provider store={Store}>
+      <RouterProvider router={router}></RouterProvider>
+    </Provider>
   </StrictMode>,
 )
