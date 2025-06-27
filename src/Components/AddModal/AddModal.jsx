@@ -1,15 +1,20 @@
 import { useEffect, useRef, useState, forwardRef } from "react"
+// DATEPICKER
 import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+// ICONE
 import { CiCalendar } from "react-icons/ci";
 import { IoMdClose } from "react-icons/io";
-import "react-datepicker/dist/react-datepicker.css";
-import Select from "./Select";
-import useClickOutside from "../../Hooks/UsClickOutside";
+// REDUX
 import { useSelector, useDispatch } from 'react-redux'
 import { add } from "../../Redux/TaskSlice"
+// COMPONENTS AND HOOKS
+import Select from "./Select";
+import useClickOutside from "../../Hooks/UsClickOutside";
+// ID GENERATOR
 import { v7 as uuidv7 } from 'uuid'
 
-export default function AddModal({ toggleModalOpen, modalOpen }) {
+export default function AddModal({ toggleModalOpen }) {
     const tasks = useSelector((state) => state.tasks.value);
     const dispatch = useDispatch();
 
@@ -24,7 +29,9 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
     // Modal reference
     const modal = useRef();
 
+    //  flag calendar open
     const [calendarOpen, setcalendarOpen] = useState(false);
+    // task state
     const [task, setTask] = useState({
         id: uuidv7(),
         title: '',
@@ -34,6 +41,7 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
         completed: false
     })
 
+    //handle select
     const addPriority = (newPriority) => {
         setTask({
             ...task,
@@ -65,9 +73,12 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
             priority: null,
             completed: false
         })
+
+        handleClose();
     }
 
-    useClickOutside(modal, handleClose)
+    //Close modal
+    // useClickOutside(modal, handleClose)
 
     useEffect(() => {
         console.log(task)
@@ -75,10 +86,10 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
 
     useEffect(() => {
         console.log(tasks)
+        localStorage.setItem('tasks', JSON.stringify(tasks))
     }, [tasks])
 
     // Custom datepicker input
-
     const DatePickerButton = forwardRef(({ onClick }, ref) => (
         <div className=" flex gap-1 px-1.5 py-1 text-stone-500 border border-stone-500 cursor-pointer rounded-lg">
             <button onClick={onClick} ref={ref} className="flex hover:cursor-pointer">
@@ -91,7 +102,6 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
                 <button onMouseDown={() => setTask({ ...task, date: null })} className="hover:bg-stone-200 rounded-full hover:cursor-pointer">
                     <IoMdClose></IoMdClose>
                 </button>}
-
         </div>
     ));
 
@@ -102,9 +112,9 @@ export default function AddModal({ toggleModalOpen, modalOpen }) {
                 <form action="" className="h-full flex flex-col gap-3 relative " onSubmit={(e) => { e.preventDefault() }}>
                     <div>
                         <input type="text" id="task-title" placeholder="Add a title" className="w-full border-transparent h-9 text-xl font-semibold px-2.5 mt-2.5 focus-visible:outline-0"
-                            onChange={(e) => { setTask({ ...task, title: e.target.value })}} value={task.title}></input>
+                            onChange={(e) => { setTask({ ...task, title: e.target.value }) }} value={task.title}></input>
                         <input type="text" id="task-description" placeholder="Description" className="w-full border-transparent px-2.5 focus-visible:outline-0 "
-                            onChange={(e) => { setTask({ ...task, description: e.target.value })}} value={task.description}></input>
+                            onChange={(e) => { setTask({ ...task, description: e.target.value }) }} value={task.description}></input>
                     </div>
 
                     <div className="flex flex-row gap-2.5 mx-2">
